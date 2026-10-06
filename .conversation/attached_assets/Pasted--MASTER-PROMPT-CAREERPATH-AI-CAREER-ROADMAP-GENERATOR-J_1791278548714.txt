@@ -1,0 +1,584 @@
+# MASTER PROMPT: CAREERPATH AI — CAREER ROADMAP GENERATOR (J4)
+
+Act as a senior full-stack engineer, AI engineer, database architect, security engineer, QA engineer, and DevOps engineer.
+
+Build a complete, functional, tested, deployment-ready application named **CareerPath AI — Personalized Career Roadmap Generator**.
+
+Do not stop at a static UI or a project plan. Implement the actual application, database integration, AI integration, automated tests, and deployment configuration.
+
+# 1. PROBLEM STATEMENT
+
+Create an application that generates personalized career roadmaps based on a student's desired profession, education, current skills, interests, and available learning time.
+
+Students must be able to:
+
+* Select their desired career.
+* Identify their current skills and skill gaps.
+* Generate personalized learning roadmaps using AI.
+* Follow weekly or monthly learning plans.
+* Discover learning resources and project ideas.
+* Track their learning progress.
+* Build a portfolio.
+* Prepare for interviews, internships, and jobs.
+* Assess their job readiness.
+* Save their progress and continue later.
+
+Do not promise guaranteed employment, salaries, or placements.
+
+# 2. REQUIRED TECHNOLOGY STACK
+
+Frontend:
+
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+* shadcn/ui
+* Lucide icons
+* React Router
+* Recharts
+* React Hook Form
+* Zod validation
+
+Backend:
+
+* TypeScript server-side API functions compatible with Vercel.
+* Google Gemini API through the official @google/genai SDK.
+* Supabase Auth.
+* Supabase PostgreSQL.
+* Supabase Row Level Security.
+
+Testing:
+
+* Vitest.
+* React Testing Library.
+* Appropriate backend integration tests.
+* Playwright for browser end-to-end tests where supported.
+
+Deployment:
+
+* GitHub.
+* Vercel.
+* Supabase.
+
+Use mutually compatible, current stable package versions. Verify SDK methods and Gemini model availability against current official documentation.
+
+# 3. ENVIRONMENT VARIABLES
+
+Use the following existing Supabase configuration.
+
+VITE_SUPABASE_URL=https://bcfbgbpqcbjzrcdprhqo.supabase.co
+
+VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_MgXmZZc2polixNE7eT5nGg_iVHjREKF
+
+GEMINI_API_KEY must be configured separately in Replit Secrets with a newly generated, valid Gemini API key.
+
+Never place the Gemini key in this prompt, source code, frontend environment variables, browser bundles, GitHub, or public logs.
+
+Create a .env.example file:
+
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=your-supabase-publishable-key
+GEMINI_API_KEY=
+
+Requirements:
+
+* Read VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY in the frontend.
+* Read GEMINI_API_KEY only in server-side code.
+* Never prefix the Gemini secret with VITE_.
+* Never expose a Supabase service-role or secret key to the browser.
+* Add .env, .env.local, and other secret-bearing files to .gitignore.
+* Never print credentials in logs or error messages.
+* Validate configuration and return safe, helpful errors if values are missing.
+* Do not overwrite working environment variables without a reason.
+* Do not claim an external integration works until it has been tested.
+
+# 4. PREMIUM USER INTERFACE
+
+Create a polished, professional SaaS interface inspired by modern AI productivity dashboards.
+
+Visual design:
+
+* Dark navy background.
+* Violet and emerald accents.
+* Clean typography.
+* Professional cards and dashboards.
+* Subtle gradients and animations.
+* Progress rings, charts, and milestone indicators.
+* Responsive desktop, tablet, and mobile layouts.
+* Accessible color contrast and keyboard navigation.
+
+Implement real functionality for every visible button and navigation item.
+
+Required pages:
+
+1. Landing page.
+2. Sign-up and login.
+3. Password reset.
+4. Student onboarding.
+5. Career selection.
+6. Roadmap generation.
+7. Roadmap dashboard.
+8. Learning task tracker.
+9. Project portfolio.
+10. Job-readiness center.
+11. Interview preparation.
+12. Learning resources.
+13. Profile and settings.
+
+# 5. STUDENT ONBOARDING
+
+Collect and validate:
+
+* Name.
+* Education level and qualification.
+* Desired profession.
+* Current technical skills.
+* Current skill level.
+* Interests.
+* Preferred learning style.
+* Available study time per day.
+* Target completion date.
+* Preferred learning resources.
+* Career objective.
+
+Allow users to edit their answers before generating a roadmap.
+
+Provide useful validation messages and preserve entered values when an API request fails.
+
+# 6. GEMINI CAREER ROADMAP GENERATOR
+
+Implement a secure server-side endpoint, for example:
+
+POST /api/generate-roadmap
+
+Use the official @google/genai SDK and a currently supported Gemini model verified against Google's documentation.
+
+The endpoint must:
+
+1. Authenticate the user.
+2. Validate the incoming request using Zod.
+3. Enforce reasonable request-size and rate limits.
+4. Read GEMINI_API_KEY from server-side environment variables.
+5. Generate a structured career roadmap.
+6. Validate the returned JSON against a defined schema.
+7. Reject malformed or incomplete responses.
+8. Return safe errors without exposing credentials.
+9. Save validated roadmaps and associated tasks in Supabase.
+10. Return the saved roadmap to the frontend.
+
+The roadmap must include:
+
+* Career overview.
+* Required qualifications.
+* Prerequisite skills.
+* Current skill-gap analysis.
+* Learning phases.
+* Weekly learning objectives.
+* Practical exercises.
+* Portfolio projects.
+* Recommended learning resources.
+* Tools and technologies.
+* Interview questions.
+* Resume preparation.
+* Internship preparation.
+* Job application preparation.
+* Completion criteria.
+* Estimated learning duration.
+
+Personalize every roadmap using the student's submitted profile and available study time.
+
+Do not return fabricated success responses when Gemini is unavailable.
+
+Handle:
+
+* Missing API key.
+* Invalid API key.
+* Unsupported model.
+* Rate limits.
+* Network errors.
+* Timeouts.
+* Invalid JSON.
+* Schema validation errors.
+* Database write failures.
+
+Use clear loading states, retry options, and helpful user-facing messages.
+
+If demo mode is implemented, label demo content clearly and never represent it as live AI output.
+
+# 7. SUPABASE AUTHENTICATION
+
+Use the supplied Supabase URL and publishable key.
+
+Implement:
+
+* Registration.
+* Login.
+* Logout.
+* Session persistence.
+* Password reset.
+* Protected routes.
+* Authentication state handling.
+* Optional Google OAuth when configured.
+
+Create a profiles record for the authenticated user as appropriate.
+
+Configure authentication redirect URLs for localhost and the deployed Vercel domain.
+
+Never assume Google OAuth works before the provider has been configured and tested.
+
+# 8. DATABASE SCHEMA AND MIGRATIONS
+
+Create version-controlled SQL migrations for:
+
+1. profiles
+2. career_goals
+3. roadmaps
+4. roadmap_phases
+5. roadmap_tasks
+6. learning_resources
+7. project_portfolios
+8. study_sessions
+9. skill_assessments
+10. job_readiness_assessments
+
+Define:
+
+* UUID primary keys.
+* Foreign keys.
+* Correct relationships.
+* Appropriate unique constraints.
+* Timestamps.
+* Indexes.
+* Valid status constraints.
+* Appropriate deletion behavior.
+* User ownership.
+
+Use consistent relationships between users, career goals, roadmaps, phases, tasks, projects, and assessments.
+
+Enable Row Level Security on every user-specific table.
+
+Write and test policies that restrict access to the authenticated user's own records. Validate ownership through trusted authentication context and database relationships.
+
+Do not rely only on frontend filtering for security.
+
+Never disable RLS to make an application feature work.
+
+Do not use a service-role key in client-side code.
+
+Provide a migration README explaining how to apply migrations to a development or test database and how to configure the existing Supabase project safely.
+
+Do not reset, drop, or overwrite existing production tables without explicit authorization.
+
+# 9. PROGRESS TRACKING
+
+Implement:
+
+* Pending, in-progress, and completed tasks.
+* Task completion controls.
+* Study session tracking.
+* Personal notes.
+* Milestone tracking.
+* Project status.
+* Weekly progress charts.
+* Monthly progress charts.
+* Current learning phase.
+* Resume-from-last-task functionality.
+
+Persist all relevant changes to Supabase.
+
+Calculate completion percentages using actual database records. Do not hard-code percentages or generate fake progress.
+
+Ensure that updates remain consistent after page refresh, logout, and login.
+
+Handle duplicate submissions, concurrent updates, and database errors appropriately.
+
+# 10. JOB-READINESS CENTER
+
+Evaluate:
+
+* Technical skills.
+* Project quality and completion.
+* Portfolio readiness.
+* Resume preparation.
+* Communication.
+* Interview preparation.
+* Problem-solving.
+* Internship and job application readiness.
+
+Define and document a transparent scoring rubric.
+
+Display:
+
+* Readiness score.
+* Assessment categories.
+* Strengths.
+* Skill gaps.
+* Recommended next actions.
+* Suggested projects.
+* Interview practice questions.
+* Resume checklist.
+* Portfolio checklist.
+
+Use real assessment data rather than arbitrary scores.
+
+Clearly state that readiness scores are estimates and do not guarantee hiring outcomes.
+
+# 11. SECURITY REQUIREMENTS
+
+Implement:
+
+* Server-side input validation.
+* Output schema validation.
+* Authentication checks.
+* Authorization checks.
+* Row Level Security.
+* Rate limiting.
+* Safe error handling.
+* Secure secret management.
+* Appropriate CORS and security configuration.
+* Protection against unauthorized record access.
+
+Never:
+
+* Hard-code private API keys.
+* Expose Gemini credentials in the browser.
+* Commit .env files.
+* Log credentials.
+* Disable security policies to hide failures.
+* Trust a user ID supplied by the client without verifying ownership.
+* Claim tests pass when they have not been executed.
+
+# 12. AUTOMATED TESTING
+
+Install and configure appropriate testing dependencies.
+
+Create tests for the actual implementation.
+
+A. BUILD AND CODE QUALITY
+
+Run:
+
+* Dependency installation.
+* TypeScript type checking.
+* Linting.
+* Unit tests.
+* Production build.
+
+Fix all failures before declaring success.
+
+B. FRONTEND TESTS
+
+Test:
+
+* Landing page renders.
+* Navigation works.
+* Forms validate inputs.
+* Onboarding saves valid information.
+* Invalid forms display useful errors.
+* Loading and error states render correctly.
+* Task completion updates the displayed progress.
+* Progress charts use real application data.
+* Buttons and links have working actions.
+
+C. AUTHENTICATION TESTS
+
+Test:
+
+* Registration.
+* Login.
+* Invalid credentials.
+* Logout.
+* Session restoration.
+* Password reset.
+* Protected routes.
+* Expired or missing sessions.
+
+Use mocks for isolated unit tests and a configured test project for real integration tests.
+
+D. DATABASE AND RLS TESTS
+
+Apply migrations to a clean test database.
+
+Create at least two test users.
+
+Verify:
+
+* User A can access their own records.
+* User B can access their own records.
+* User A cannot read User B's records.
+* User A cannot update or delete User B's records.
+* Unauthorized requests are rejected.
+* Related roadmap records maintain valid ownership.
+* Invalid foreign keys and statuses are rejected.
+* Database errors do not produce false success messages.
+
+Never use production user data for destructive automated tests.
+
+E. GEMINI TESTS
+
+Mock the Gemini SDK for deterministic unit tests.
+
+Test:
+
+* Successful structured roadmap response.
+* Missing API key.
+* Invalid API key.
+* Rate limit response.
+* Network failure.
+* Timeout.
+* Malformed JSON.
+* Schema validation failure.
+* Database persistence failure.
+* Retry behavior.
+
+Add a separate live integration test that runs only when a valid key and explicit test configuration are available.
+
+Confirm the Gemini key does not appear in frontend bundles, source maps, network responses, or browser-visible errors.
+
+F. PROGRESS AND SCORING TESTS
+
+Test:
+
+* Zero completed tasks.
+* Partially completed roadmap.
+* All tasks completed.
+* Empty roadmap.
+* Duplicate completion requests.
+* Reopening the application after progress has been saved.
+* Job-readiness calculations at boundary values.
+* Invalid or missing assessment data.
+
+Verify scores and percentages using known test inputs and expected results.
+
+G. END-TO-END TESTS
+
+Use Playwright when supported.
+
+Test the following flow:
+
+1. Open the landing page.
+2. Register or sign in using a test account.
+3. Complete onboarding.
+4. Generate a roadmap using a mocked Gemini response.
+5. Save and open the roadmap.
+6. Mark a learning task complete.
+7. Verify that progress changes.
+8. Refresh the page and verify persistence.
+9. Open the job-readiness center.
+10. Sign out and verify protected pages require authentication.
+
+H. DEPLOYMENT TESTS
+
+Verify:
+
+* Vercel build succeeds.
+* Required environment variables are configured.
+* Server-side Gemini calls work.
+* Supabase authentication redirects are correct.
+* SPA routing works on direct page refresh.
+* Production database access works under RLS.
+* No private credentials appear in Git history or build artifacts.
+* The deployed application passes the critical end-to-end flow.
+
+# 13. GITHUB
+
+Prepare:
+
+* Complete source code.
+* package.json and lockfile.
+* .gitignore.
+* .env.example.
+* README.md.
+* Database migrations.
+* Test files.
+* Deployment configuration.
+
+Before pushing:
+
+* Inspect tracked files for credentials.
+* Verify .env files are excluded.
+* Remove any accidentally committed secrets.
+* Never claim a push succeeded without confirmation.
+
+If GitHub integration is unavailable, provide the exact commands needed to initialize Git, commit the source, and push to the intended repository.
+
+# 14. VERCEL DEPLOYMENT
+
+Prepare a Vercel-compatible project.
+
+Configure:
+
+* Correct build command.
+* Correct output directory.
+* Server-side API routes.
+* SPA routing fallback where appropriate.
+* Production environment variables.
+* Supabase authentication redirect URLs.
+
+Required Vercel variables:
+
+VITE_SUPABASE_URL=https://bcfbgbpqcbjzrcdprhqo.supabase.co
+
+VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_MgXmZZc2polixNE7eT5nGg_iVHjREKF
+
+GEMINI_API_KEY=SET_NEW_KEY_IN_VERCEL_DASHBOARD
+
+Add the actual replacement Gemini key only through Vercel's environment-variable settings.
+
+Do not expose the Gemini key through frontend code.
+
+Ensure that the server-side API routes are deployed successfully and that their runtime is compatible with the selected SDK.
+
+# 15. IMPLEMENTATION ORDER
+
+Follow this sequence:
+
+1. Inspect the Replit environment.
+2. Initialize the project and install dependencies.
+3. Build the UI and routing.
+4. Configure Supabase client and authentication.
+5. Create SQL migrations and RLS policies.
+6. Implement student onboarding.
+7. Implement the server-side Gemini endpoint.
+8. Implement roadmap generation and persistence.
+9. Implement task tracking and progress calculations.
+10. Implement portfolio and job-readiness features.
+11. Write automated unit and integration tests.
+12. Run TypeScript, lint, test, and build commands.
+13. Fix failures and rerun tests.
+14. Prepare GitHub and Vercel configuration.
+15. Perform deployment checks.
+16. Write complete setup and troubleshooting documentation.
+
+Do not skip testing because the application looks correct.
+
+# 16. FINAL ACCEPTANCE REPORT
+
+At completion, provide a test report with these columns:
+
+* Test name.
+* Command or procedure.
+* Expected result.
+* Actual result.
+* PASS, FAIL, or NOT RUN.
+* Relevant error or log summary.
+* Fix applied, if any.
+
+Report the actual results of:
+
+* TypeScript checking.
+* Linting.
+* Unit tests.
+* Integration tests.
+* Database and RLS tests.
+* Gemini integration tests.
+* Production build.
+* End-to-end tests.
+* Deployment verification.
+
+Do not mark a test PASS without executing it successfully.
+
+If credentials, OAuth configuration, a test database, or deployment access are missing, mark the relevant tests NOT RUN and explain the remaining setup.
+
+Start implementing the real application now. Continue until the implementation and tests are complete or a genuine external configuration requirement prevents further progress.

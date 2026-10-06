@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: careerpath
+    description: Career roadmap, progress, and readiness operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,279 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /careerpath/profile:
+    get:
+      operationId: getProfile
+      tags: [careerpath]
+      summary: Get the authenticated student's profile
+      responses:
+        "200":
+          description: Student profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudentProfile"
+    put:
+      operationId: saveProfile
+      tags: [careerpath]
+      summary: Save onboarding and profile answers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileInput"
+      responses:
+        "200":
+          description: Saved profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudentProfile"
+  /careerpath/dashboard:
+    get:
+      operationId: getDashboard
+      tags: [careerpath]
+      summary: Get actual progress and recent learning activity
+      responses:
+        "200":
+          description: Dashboard overview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+  /careerpath/roadmaps:
+    get:
+      operationId: listRoadmaps
+      tags: [careerpath]
+      summary: List the student's saved roadmaps
+      responses:
+        "200":
+          description: Saved roadmaps
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RoadmapSummary"
+  /careerpath/roadmaps/generate:
+    post:
+      operationId: generateRoadmap
+      tags: [careerpath]
+      summary: Generate and save a personalized AI roadmap
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RoadmapInput"
+      responses:
+        "201":
+          description: Saved roadmap and learning tasks
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoadmapDetail"
+  /careerpath/roadmaps/{roadmapId}:
+    get:
+      operationId: getRoadmap
+      tags: [careerpath]
+      summary: Get a saved roadmap and its tasks
+      parameters:
+        - name: roadmapId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Roadmap detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoadmapDetail"
+  /careerpath/tasks/{taskId}:
+    patch:
+      operationId: updateTask
+      tags: [careerpath]
+      summary: Update task status and personal notes
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskUpdate"
+      responses:
+        "200":
+          description: Updated task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoadmapTask"
+  /careerpath/study-sessions:
+    get:
+      operationId: listStudySessions
+      tags: [careerpath]
+      summary: List recent study sessions
+      responses:
+        "200":
+          description: Study sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StudySession"
+    post:
+      operationId: createStudySession
+      tags: [careerpath]
+      summary: Record a study session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudySessionInput"
+      responses:
+        "201":
+          description: Saved study session
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudySession"
+  /careerpath/resources:
+    get:
+      operationId: listResources
+      tags: [careerpath]
+      summary: List learning resources saved from the student's roadmaps
+      responses:
+        "200":
+          description: Learning resources
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LearningResource"
+  /careerpath/portfolio:
+    get:
+      operationId: listPortfolioProjects
+      tags: [careerpath]
+      summary: List the student's portfolio projects
+      responses:
+        "200":
+          description: Portfolio projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PortfolioProject"
+    post:
+      operationId: createPortfolioProject
+      tags: [careerpath]
+      summary: Add a project to the student's portfolio
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PortfolioInput"
+      responses:
+        "201":
+          description: Saved portfolio project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioProject"
+  /careerpath/portfolio/{projectId}:
+    patch:
+      operationId: updatePortfolioProject
+      tags: [careerpath]
+      summary: Update a portfolio project
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PortfolioUpdate"
+      responses:
+        "200":
+          description: Updated portfolio project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioProject"
+    delete:
+      operationId: deletePortfolioProject
+      tags: [careerpath]
+      summary: Delete a portfolio project
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Project deleted
+  /careerpath/readiness:
+    get:
+      operationId: getReadiness
+      tags: [careerpath]
+      summary: Get the latest job-readiness assessment
+      responses:
+        "200":
+          description: Readiness assessment and rubric
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReadinessResult"
+    post:
+      operationId: createReadinessAssessment
+      tags: [careerpath]
+      summary: Save an assessment based on the student's self-review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReadinessInput"
+      responses:
+        "201":
+          description: Saved readiness assessment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReadinessResult"
+  /careerpath/interview-prep:
+    get:
+      operationId: getInterviewPrep
+      tags: [careerpath]
+      summary: Get interview preparation generated for the latest roadmap
+      responses:
+        "200":
+          description: Interview and application preparation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InterviewPrep"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +308,230 @@ components:
           type: string
       required:
         - status
+    ProfileInput:
+      type: object
+      required: [name, educationLevel, desiredProfession, currentSkills, interests, learningStyle, studyMinutesPerDay, preferredResources, careerObjective]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 120 }
+        educationLevel: { type: string, minLength: 1, maxLength: 80 }
+        qualification: { type: string, maxLength: 160 }
+        desiredProfession: { type: string, minLength: 1, maxLength: 160 }
+        currentSkills: { type: array, items: { type: string, maxLength: 80 }, maxItems: 40 }
+        skillLevel: { type: string, enum: [beginner, intermediate, advanced, mixed] }
+        interests: { type: array, items: { type: string, maxLength: 80 }, maxItems: 30 }
+        learningStyle: { type: string, maxLength: 80 }
+        studyMinutesPerDay: { type: integer, minimum: 10, maximum: 600 }
+        targetCompletionDate: { type: ["string", "null"], format: date }
+        preferredResources: { type: array, items: { type: string, maxLength: 80 }, maxItems: 20 }
+        careerObjective: { type: string, minLength: 1, maxLength: 2000 }
+    StudentProfile:
+      allOf:
+        - $ref: "#/components/schemas/ProfileInput"
+        - type: object
+          required: [id, updatedAt]
+          properties:
+            id: { type: string, format: uuid }
+            updatedAt: { type: string, format: date-time }
+    RoadmapInput:
+      type: object
+      required: [profile]
+      properties:
+        profile:
+          $ref: "#/components/schemas/ProfileInput"
+    RoadmapContent:
+      type: object
+      required: [careerOverview, requiredQualifications, prerequisiteSkills, skillGapAnalysis, phases, practicalExercises, portfolioProjects, learningResources, toolsAndTechnologies, interviewQuestions, resumePreparation, internshipPreparation, jobApplicationPreparation, completionCriteria, estimatedLearningDurationWeeks]
+      properties:
+        careerOverview: { type: string }
+        requiredQualifications: { type: array, items: { type: string } }
+        prerequisiteSkills: { type: array, items: { type: string } }
+        skillGapAnalysis: { type: array, items: { type: string } }
+        phases:
+          type: array
+          items: { $ref: "#/components/schemas/RoadmapPhase" }
+        practicalExercises: { type: array, items: { $ref: "#/components/schemas/PracticalExercise" } }
+        portfolioProjects: { type: array, items: { type: string } }
+        learningResources: { type: array, items: { $ref: "#/components/schemas/LearningResource" } }
+        toolsAndTechnologies: { type: array, items: { type: string } }
+        interviewQuestions: { type: array, items: { type: string } }
+        resumePreparation: { type: array, items: { type: string } }
+        internshipPreparation: { type: array, items: { type: string } }
+        jobApplicationPreparation: { type: array, items: { type: string } }
+        completionCriteria: { type: array, items: { type: string } }
+        estimatedLearningDurationWeeks: { type: integer, minimum: 1, maximum: 260 }
+    RoadmapPhase:
+      type: object
+      required: [phaseNumber, title, summary, durationWeeks, weeklyObjectives, tasks]
+      properties:
+        phaseNumber: { type: integer, minimum: 1 }
+        title: { type: string }
+        summary: { type: string }
+        durationWeeks: { type: integer, minimum: 1 }
+        weeklyObjectives: { type: array, items: { type: string } }
+        tasks:
+          type: array
+          items: { $ref: "#/components/schemas/TaskInput" }
+    TaskInput:
+      type: object
+      required: [title, description, weekNumber]
+      properties:
+        title: { type: string }
+        description: { type: string }
+        weekNumber: { type: integer, minimum: 1 }
+    PracticalExercise:
+      type: object
+      required: [title, description]
+      properties:
+        title: { type: string }
+        description: { type: string }
+    LearningResource:
+      type: object
+      required: [id, title, provider, url, resourceType, whyRelevant]
+      properties:
+        id: { type: string, format: uuid }
+        title: { type: string }
+        provider: { type: string }
+        url: { type: string, format: uri }
+        resourceType: { type: string }
+        whyRelevant: { type: string }
+    RoadmapSummary:
+      type: object
+      required: [id, careerTitle, createdAt, estimatedWeeks, completionPercentage]
+      properties:
+        id: { type: string, format: uuid }
+        careerTitle: { type: string }
+        createdAt: { type: string, format: date-time }
+        estimatedWeeks: { type: integer }
+        completionPercentage: { type: number, minimum: 0, maximum: 100 }
+    RoadmapDetail:
+      allOf:
+        - $ref: "#/components/schemas/RoadmapSummary"
+        - type: object
+          required: [content, tasks]
+          properties:
+            content: { $ref: "#/components/schemas/RoadmapContent" }
+            tasks:
+              type: array
+              items: { $ref: "#/components/schemas/RoadmapTask" }
+    RoadmapTask:
+      type: object
+      required: [id, phaseNumber, title, description, weekNumber, status, notes]
+      properties:
+        id: { type: string, format: uuid }
+        phaseNumber: { type: integer }
+        title: { type: string }
+        description: { type: string }
+        weekNumber: { type: integer }
+        status: { type: string, enum: [pending, in_progress, completed] }
+        notes: { type: string }
+    TaskUpdate:
+      type: object
+      properties:
+        status: { type: string, enum: [pending, in_progress, completed] }
+        notes: { type: string, maxLength: 4000 }
+    DashboardSummary:
+      type: object
+      required: [profileName, activeCareer, completedTasks, totalTasks, completionPercentage, portfolioCount, weeklyProgress, upcomingTasks, readinessScore]
+      properties:
+        profileName: { type: string }
+        activeCareer: { type: ["string", "null"] }
+        completedTasks: { type: integer }
+        totalTasks: { type: integer }
+        completionPercentage: { type: number, minimum: 0, maximum: 100 }
+        portfolioCount: { type: integer }
+        weeklyProgress:
+          type: array
+          items:
+            type: object
+            required: [date, minutes]
+            properties:
+              date: { type: string, format: date }
+              minutes: { type: integer, minimum: 0 }
+        upcomingTasks:
+          type: array
+          items: { $ref: "#/components/schemas/RoadmapTask" }
+        readinessScore: { type: ["number", "null"], minimum: 0, maximum: 100 }
+    StudySessionInput:
+      type: object
+      required: [minutes, note]
+      properties:
+        minutes: { type: integer, minimum: 1, maximum: 1440 }
+        note: { type: string, maxLength: 1000 }
+        taskId: { type: ["string", "null"], format: uuid }
+    StudySession:
+      type: object
+      required: [id, minutes, note, startedAt]
+      properties:
+        id: { type: string, format: uuid }
+        minutes: { type: integer }
+        note: { type: string }
+        startedAt: { type: string, format: date-time }
+    PortfolioInput:
+      type: object
+      required: [title, description, skills, status]
+      properties:
+        title: { type: string, minLength: 1, maxLength: 160 }
+        description: { type: string, maxLength: 4000 }
+        skills: { type: array, items: { type: string, maxLength: 80 }, maxItems: 30 }
+        projectUrl: { type: ["string", "null"], format: uri }
+        repoUrl: { type: ["string", "null"], format: uri }
+        status: { type: string, enum: [planned, in_progress, completed] }
+    PortfolioUpdate:
+      type: object
+      properties:
+        title: { type: string, minLength: 1, maxLength: 160 }
+        description: { type: string, maxLength: 4000 }
+        skills: { type: array, items: { type: string, maxLength: 80 }, maxItems: 30 }
+        projectUrl: { type: ["string", "null"], format: uri }
+        repoUrl: { type: ["string", "null"], format: uri }
+        status: { type: string, enum: [planned, in_progress, completed] }
+    PortfolioProject:
+      allOf:
+        - $ref: "#/components/schemas/PortfolioInput"
+        - type: object
+          required: [id, createdAt, updatedAt]
+          properties:
+            id: { type: string, format: uuid }
+            createdAt: { type: string, format: date-time }
+            updatedAt: { type: string, format: date-time }
+    ReadinessInput:
+      type: object
+      required: [technicalSkills, projectQuality, portfolioReadiness, resumePreparation, communication, interviewPreparation, problemSolving, jobApplicationReadiness]
+      properties:
+        technicalSkills: { type: integer, minimum: 0, maximum: 5 }
+        projectQuality: { type: integer, minimum: 0, maximum: 5 }
+        portfolioReadiness: { type: integer, minimum: 0, maximum: 5 }
+        resumePreparation: { type: integer, minimum: 0, maximum: 5 }
+        communication: { type: integer, minimum: 0, maximum: 5 }
+        interviewPreparation: { type: integer, minimum: 0, maximum: 5 }
+        problemSolving: { type: integer, minimum: 0, maximum: 5 }
+        jobApplicationReadiness: { type: integer, minimum: 0, maximum: 5 }
+    ReadinessResult:
+      type: object
+      required: [score, categories, strengths, skillGaps, nextActions, rubric, assessedAt]
+      properties:
+        score: { type: ["number", "null"], minimum: 0, maximum: 100 }
+        categories:
+          type: array
+          items:
+            type: object
+            required: [name, score, maxScore]
+            properties:
+              name: { type: string }
+              score: { type: integer, minimum: 0, maximum: 5 }
+              maxScore: { type: integer, const: 5 }
+        strengths: { type: array, items: { type: string } }
+        skillGaps: { type: array, items: { type: string } }
+        nextActions: { type: array, items: { type: string } }
+        rubric: { type: string }
+        assessedAt: { type: ["string", "null"], format: date-time }
+    InterviewPrep:
+      type: object
+      required: [careerTitle, questions, resumeChecklist, internshipChecklist, jobSearchChecklist]
+      properties:
+        careerTitle: { type: ["string", "null"] }
+        questions: { type: array, items: { type: string } }
+        resumeChecklist: { type: array, items: { type: string } }
+        internshipChecklist: { type: array, items: { type: string } }
+        jobSearchChecklist: { type: array, items: { type: string } }
 
